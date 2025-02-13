@@ -35,12 +35,14 @@ if e:
 
         element_list.extend(data['elementList'])
 
+        print(f"Page {i}/{total_pages}")
         if i >= total_pages:
-            print(f"Page {i}/{total_pages}")
             break
 
         i += 1
 
+    # Example
+    # print propertyCode, price, size, operation, address, rooms, bathrooms, neighborhood + district + municipality
+    print('| Property Code | Price | Size | Operation | Address | Rooms | Bathrooms | Neighborhood, District, Municipality |')
     for element in element_list:
-        # do something with the element
-        pass
+        print(f"| {element.get('propertyCode')} | {element.get('price')} | {element.get('size')} | {element.get('operation')} | {element.get('address')} | {element.get('rooms')} | {element.get('bathrooms')} | {element.get('neighborhood')}, {element.get('district')}, {element.get('municipality')} |")
