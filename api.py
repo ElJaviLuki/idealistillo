@@ -7,8 +7,12 @@ import re
 import time
 import urllib.parse
 import uuid
-from dotenv import load_dotenv
+from typing import Optional, Set, Literal, Dict
+
 import requests
+from dotenv import load_dotenv
+
+from model import SubTypology
 
 load_dotenv()
 
@@ -51,6 +55,7 @@ def get_timestamp_millis():
 
 def md5_hash(data: str) -> str:
     return hashlib.md5(data.encode()).hexdigest()
+
 
 
 class IdealistaClient:
@@ -200,8 +205,28 @@ class IdealistaClient:
         signed = self.sign_request(request)
         return requests.Session().send(signed.prepare())
 
+
+    # max_items puede ser 0 si lo que se quiere es solo los metadatos de la busqueda
+    def search(self, payload, ad_ids=""):
+        url = f"{API_BASE}/3.5/{COUNTRY}/search"
+
+        querystring = {
+            "adIds": ad_ids,
+        }
+
+        headers = {
+            "app_version": "12.15.1",
+            "user-agent": "Dalvik/2.1.0 (Linux; U; Android 13; M2101K6G Build/TQ2A.230305.008.C1)",
+            "device_identifier": DEVICE_IDENTIFIER,
+            "authorization": self.authorization,
+            "content-type": "application/x-www-form-urlencoded",
+        }
+
+        request = requests.Request("POST", url, headers=headers, data=payload, params=querystring)
+        signed = self.sign_request(request)
+        return requests.Session().send(signed.prepare())
+
     def login(self, user, password):
         r = self._login(user, password)
         self.token = r.json()["token"]
         return r
-
