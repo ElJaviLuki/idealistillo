@@ -3,6 +3,7 @@ from typing import Optional, Set, Literal
 from api import COUNTRY
 from model import Operation, PropertyType, Gender, BedType, FloorHeights, TenantOccupation, RentalUsage, Preservation, \
     SubTypology
+from utils import to_comma_separated_string
 
 
 class SearchFilterBuilder:
@@ -58,7 +59,7 @@ class SearchFilterBuilder:
             self.filters["bathrooms"] = ",".join(str(b) for b in bathrooms)
         return self
 
-    def set_num_page(self, num_page: int):
+    def set_num_page(self, num_page: int) -> 'SearchFilterBuilder':
         self.filters["numPage"] = num_page
         return self
 
@@ -121,7 +122,7 @@ class SearchFilterBuilder:
             "bedType": bed_type,
             "availableFrom": available_from,
             "onlineBooking": online_booking,
-            "housemates": (",".join(str(n) for n in housemates)) if housemates else None,
+            "housemates": to_comma_separated_string(housemates),
             "couplesAllowed": couples_allowed,
             "childrenAllowed": children_allowed,
             "streetViewWindow": street_view_window,
@@ -134,8 +135,8 @@ class SearchFilterBuilder:
             "hasHouseKeeper": housekeeper_included,
             "garden": garden,
             "swimmingPool": swimming_pool,
-            "floorHeights": (",".join(fh.value for fh in floor_heights)) if floor_heights else None,
-            "occupation": (",".join(to.value for to in tenant_occupation)) if tenant_occupation else None,
+            "floorHeights": to_comma_separated_string(floor_heights),
+            "occupation": to_comma_separated_string(tenant_occupation),
             "gayPartners": lgbt_friendly,
             "ownerNotLiving": owner_not_living,
             "privateOwner": private_owner,
@@ -213,23 +214,22 @@ class SearchFilterBuilder:
 
         # Update home filters
         self.filters.update({
-            "rentalUsages": (",".join(ru.value for ru in rental_usages)) if rental_usages else None,
+            "rentalUsages": to_comma_separated_string(rental_usages),
             "onlyFlats": is_flat,
             "penthouse": is_penthouse,
             "duplex": is_duplex,
             "flat": _flat,
             "countryHouse": is_country_house,
             "chalet": _chalet,
-            "subTypology": (",".join(st.value for st in sub_typology_set)) if sub_typology_set else None,
-            "preservations": (",".join(pr.value for pr in preservations)) if preservations else None,
+            "subTypology": to_comma_separated_string(sub_typology_set),
+            "preservations": to_comma_separated_string(preservations),
             "furnished": furnished,
             "petsAllowed": pets_allowed,
             "airConditioning": air_conditioning,
             "builtinWardrobes": builtin_wardrobes,
             "elevator": elevator,
             "balcony": balcony,
-            "terrance": terrace,
-            # yeah, this is a typo in the API; BUT it's a typo in the API, so we have to keep it
+            "terrance": terrace,  # yeah, 'terraNce' is a typo in the API; BUT it's a typo in the API, so we have to keep it
             "exteriorDomesticSpace": _exterior_domestic_space,
             "exterior": exterior,
             "garage": garage,
@@ -238,7 +238,7 @@ class SearchFilterBuilder:
             "storeRoom": store_room,
             "accessible": accessible,
             "luxury": luxury,
-            "floorHeights": (",".join(fh.value for fh in floor_heights)) if floor_heights else None,
+            "floorHeights": to_comma_separated_string(floor_heights),
             "hasPlan": has_plan,
             "virtualTour": virtual_tour,
             "bankOffer": bank_offer,
