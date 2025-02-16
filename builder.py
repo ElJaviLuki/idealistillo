@@ -1,4 +1,5 @@
 import json
+import sys
 from typing import Optional, Set, Literal
 
 from api import COUNTRY
@@ -15,6 +16,8 @@ class SearchFilterBuilder:
             "maxItems": 100,
             "numPage": 1,
             "showRuledOuts": True,
+            "minPrice": 0,
+            "maxPrice": sys.maxsize,
 
             "locale": COUNTRY,
             "quality": "high",
