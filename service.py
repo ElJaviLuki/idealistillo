@@ -18,6 +18,10 @@ class IdealistaService(IdealistaClient):
             if total_pages is None:
                 total_pages = response_data['totalPages']
 
+            if response.status_code == 407:
+                print("WARNING: API rate limit reached")
+                continue
+
             yield from response_data['elementList']
 
             print(f"Fetching page {page}/{total_pages}")
