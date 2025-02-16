@@ -1,8 +1,9 @@
+import json
 from typing import Optional, Set, Literal
 
 from api import COUNTRY
 from model import Operation, PropertyType, Gender, BedType, FloorHeights, TenantOccupation, RentalUsage, Preservation, \
-    SubTypology
+    SubTypology, Geometry
 from utils import to_comma_separated_string
 
 
@@ -80,6 +81,16 @@ class SearchFilterBuilder:
 
     def set_show_ruled_outs(self, show_ruled_outs: bool):
         self.filters["showRuledOuts"] = show_ruled_outs
+        return self
+
+    def set_shape(self, shape: Geometry):
+        if shape:
+            self.filters["shape"] = json.dumps(shape.to_dict())
+        return self
+
+    def set_shape_from_json(self, shape: str):
+        if shape:
+            self.filters["shape"] = json.dumps(shape)
         return self
 
     def set_room_filters(self, *, gender: Gender,

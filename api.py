@@ -57,7 +57,6 @@ def md5_hash(data: str) -> str:
     return hashlib.md5(data.encode()).hexdigest()
 
 
-
 class IdealistaClient:
     def __init__(self):
         self.authorization = ""
@@ -204,7 +203,6 @@ class IdealistaClient:
         request = requests.Request("POST", url, headers=headers, data=payload)
         signed = self.sign_request(request)
         return requests.Session().send(signed.prepare())
-
 
     # max_items puede ser 0 si lo que se quiere es solo los metadatos de la busqueda
     def search(self, payload, ad_ids=""):
